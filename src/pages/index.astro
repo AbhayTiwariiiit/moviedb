@@ -1,0 +1,427 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import MovieCard from '../components/MovieCard.astro';
+import { getTrendingMovies } from '../lib/tmdb';
+import movies from '../data/movies.json';
+import genres from '../data/genres.json';
+
+const trendingMovies = await getTrendingMovies();
+const featuredMovies = trendingMovies.slice(0, 2);
+const latestMovies = trendingMovies;
+const webSeries = trendingMovies.filter((m:any) => m.category === 'web-series' || m.genres?.includes('TV Movie'));
+const hollywood = trendingMovies;
+const bollywood = trendingMovies;
+
+const stats = [
+  { value: "10,000+", label: "Movies & Shows" },
+  { value: "12+", label: "Languages" },
+  { value: "16+", label: "Genres" },
+  { value: "Daily", label: "New Updates" },
+];
+
+const platforms = [
+  { name: "Netflix", color: "var(--color-netflix)" },
+  { name: "Amazon Prime", color: "var(--color-prime)" },
+  { name: "Disney+", color: "var(--color-disney)" },
+  { name: "HBO Max", color: "var(--color-hbo)" },
+  { name: "Apple TV+", color: "var(--color-apple)" },
+  { name: "Hotstar", color: "var(--color-hotstar)" },
+  { name: "Zee5", color: "var(--color-zee5)" },
+];
+---
+
+<Layout title="Discover Movies & Series">
+  <Navbar slot="navbar" />
+
+  <!-- ═══ HERO SECTION ═══ -->
+  <section class="relative overflow-hidden py-20 sm:py-28 lg:py-36" id="hero">
+    <!-- Mesh Gradient Background -->
+    <div class="absolute inset-0 bg-mesh-gradient opacity-60"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-canvas)]"></div>
+
+    <!-- Animated gradient orbs -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-gradient-start)] rounded-full opacity-[0.06] blur-[100px] animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--color-gradient-end)] rounded-full opacity-[0.06] blur-[100px] animate-pulse" style="animation-delay: 1s"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-gradient-mid)] rounded-full opacity-[0.04] blur-[120px]"></div>
+
+    <div class="relative max-w-[1400px] mx-auto px-4 sm:px-6 text-center">
+      <!-- Eyebrow Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] mb-8 animate-fade-in">
+        <span class="w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse"></span>
+        <span class="text-xs font-mono text-[var(--color-body)]">Updated daily · {movies.length}+ titles available</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-4xl sm:text-5xl lg:text-7xl font-semibold tracking-tight mb-6 animate-slide-up" style="line-height: 1.05; letter-spacing: -0.04em">
+        Discover movies<br />& series<span class="text-gradient">.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-lg sm:text-xl text-[var(--color-body)] w-full max-w-[800px] mx-auto mb-10 animate-slide-up" style="animation-delay: 0.1s">
+        Your premium destination for finding where to watch movies, TV shows, and web series across all streaming platforms.
+      </p>
+
+      <!-- CTA Row -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style="animation-delay: 0.2s">
+
+        <a
+          href="/movies/1"
+          class="inline-flex items-center gap-2 px-8 py-3 rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-ink)] font-medium text-base transition-all duration-200 hover:bg-[var(--color-surface)] hover:border-[var(--color-mute)]"
+        >
+          Browse All
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRENDING NOW ═══ -->
+  <section class="py-16 sm:py-20" id="trending">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-link)] mb-1">trending</p>
+          <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Trending now.</h2>
+        </div>
+        <a href="/category/bollywood-movies" class="text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors flex items-center gap-1">
+          View all
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {trendingMovies.map(movie => (
+          <MovieCard {...movie} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURED HERO CARDS ═══ -->
+  <section class="py-12" id="featured">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {featuredMovies.slice(0, 2).map(movie => (
+          <a href={`/movie/${movie.slug}`} class="group relative rounded-2xl overflow-hidden aspect-[16/9] block" id={`featured-${movie.slug}`}>
+            <img src={movie.backdropUrl} alt={movie.title} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.display='none'" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase text-white bg-[var(--color-gradient-mid)]">{movie.quality[0]}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase text-white bg-[var(--color-link)]">⭐ {movie.ratings.imdb}</span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-white tracking-tight mb-1">{movie.title}</h3>
+              <p class="text-sm text-gray-300">{movie.year} · {movie.genres.slice(0, 3).join(' · ')} · {movie.language[0]}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BROWSE BY GENRE ═══ -->
+  <section class="py-12" id="genres">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div class="mb-6">
+        <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-link)] mb-1">categories</p>
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Browse by genre.</h2>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        {genres.map(genre => (
+          <a
+            href={`/genre/${genre.slug}`}
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] hover:border-[var(--color-hairline-strong)] hover:bg-[var(--color-surface-hover)] transition-all duration-200"
+            id={`genre-pill-${genre.slug}`}
+          >
+            <span>{genre.icon}</span>
+            {genre.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LATEST BOLLYWOOD ═══ -->
+  {bollywood.length > 0 && (
+    <section class="py-12" id="bollywood">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-gradient-end)] mb-1">bollywood</p>
+            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Latest Bollywood.</h2>
+          </div>
+          <a href="/category/bollywood-movies" class="text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors flex items-center gap-1">
+            View all <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {bollywood.map(movie => <MovieCard {...movie} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ PLATFORMS STRIP ═══ -->
+  <section class="py-16 border-y border-[var(--color-hairline)]" id="platforms">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <p class="text-center text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-8">Find where to watch across all platforms</p>
+      <div class="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+        {platforms.map(p => (
+          <span class="text-lg sm:text-xl font-semibold tracking-tight transition-colors duration-200 cursor-default" style={`color: ${p.color}40`} onmouseover={`this.style.color='${p.color}'`} onmouseout={`this.style.color='${p.color}40'`}>
+            {p.name}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LATEST HOLLYWOOD ═══ -->
+  {hollywood.length > 0 && (
+    <section class="py-12" id="hollywood">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-gradient-start)] mb-1">hollywood</p>
+            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Latest Hollywood.</h2>
+          </div>
+          <a href="/category/hollywood-movies" class="text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors flex items-center gap-1">
+            View all <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {hollywood.map(movie => <MovieCard {...movie} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ WEB SERIES ═══ -->
+  {webSeries.length > 0 && (
+    <section class="py-12" id="web-series">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-gradient-mid)] mb-1">web series</p>
+            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Latest web series.</h2>
+          </div>
+          <a href="/category/web-series" class="text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors flex items-center gap-1">
+            View all <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {webSeries.map(movie => <MovieCard {...movie} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ═══ STATS SECTION (Dark polarity-flipped band) ═══ -->
+  <section class="py-20 sm:py-24 bg-[var(--color-surface)] border-y border-[var(--color-hairline)] relative overflow-hidden" id="stats">
+    <div class="absolute inset-0 bg-mesh-gradient opacity-30"></div>
+    <div class="relative max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-link)] mb-1">by the numbers</p>
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Your entertainment hub.</h2>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {stats.map(stat => (
+          <div class="text-center" id={`stat-${stat.label.toLowerCase().replace(/\s/g, '-')}`}>
+            <p class="text-4xl sm:text-5xl font-semibold tracking-tight text-gradient mb-2">{stat.value}</p>
+            <p class="text-sm text-[var(--color-mute)] font-mono uppercase tracking-wider">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ALL MOVIES ═══ -->
+  <section class="py-12" id="all-movies">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div class="mb-8">
+        <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-1">library</p>
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">All titles.</h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
+        {latestMovies.slice(0, 12).map(movie => <MovieCard {...movie} />)}
+      </div>
+      <div class="text-center">
+        <a href="/movies/1" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] text-[var(--color-ink)] font-medium text-base transition-all duration-200 hover:bg-[var(--color-surface-hover)]">
+          View All Movies
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SEO CONTENT (Expandable) ═══ -->
+  <section class="py-16 bg-[var(--color-surface)] border-t border-[var(--color-hairline)]" id="about-us">
+    <div class="max-w-[1000px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">About HD4U Movies</h2>
+        <p class="text-[var(--color-mute)] mt-2">The premier destination for cinema lovers</p>
+      </div>
+      
+      <details class="group cursor-pointer">
+        <summary class="list-none text-center font-medium text-[var(--color-link)] hover:text-[var(--color-link-deep)] transition-colors mb-6 flex flex-col items-center gap-2 [&::-webkit-details-marker]:hidden">
+          <span>Read Our Story</span>
+          <svg class="w-5 h-5 transform group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        
+        <div class="prose prose-invert max-w-none text-sm text-[var(--color-body)] leading-relaxed space-y-6 animate-fade-in pb-8">
+          <p>
+            When it comes to discovering the ultimate cinematic experience, finding a reliable platform can often feel like searching for a needle in a haystack. Welcome to the premier destination for cinema lovers: your dedicated <strong>hd4u movies hub</strong>. Whether you are looking for the latest blockbuster releases, timeless classics, or binge-worthy <strong>hd4u web series</strong>, our platform is meticulously designed to serve as your all-in-one entertainment compass.
+          </p>
+          
+          <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">The Definitive HD4U Movie Hub</h3>
+          <p>
+            As the digital landscape evolves, so does the way we consume entertainment. At the core of our platform is the renowned <strong>hd4u hub</strong>, a meticulously curated catalog that brings the magic of the silver screen directly to your devices. We understand that our users demand quality, which is why we emphasize high-definition viewing experiences, directing you to platforms offering stunning <strong>4k movies</strong> and <strong>top rated movies</strong>.
+          </p>
+          <p>
+            If you've been searching for <strong>hd4u movies</strong> or the highly sought-after <strong>hd4u hab</strong>, you have arrived at the right place. Our database spans across genres, languages, and borders. From Hollywood spectacles to Bollywood masterpieces, the <strong>movie hd4u</strong> collection is unparalleled. We don't just list titles; we provide a comprehensive <strong>hd4u movie review</strong> ecosystem. Every entry in our <strong>hd4uhub movies</strong> directory comes packed with rich metadata, including authentic audience ratings, critical consensus, cast information, and high-resolution posters.
+          </p>
+          
+          <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">Seamless Navigation and Discovery</h3>
+          <p>
+            One of the primary reasons users continuously return to the <strong>hd4u movie hub</strong> is our commitment to a premium user experience. We have banished cluttered interfaces to the past. Inspired by the sleekest modern design philosophies, navigating the <strong>hub hd4u</strong> feels effortless. Whether you type in "<strong>hd4uhub movie</strong>" or "<strong>hu hd4u</strong>" into your search bar, our goal is that you find exactly where to stream or watch your desired content within seconds.
+          </p>
+          <p>
+            The architecture of our <strong>hd4u movies hub</strong> is built on speed and reliability. We aggregate data from industry-leading sources to ensure that when you look up a <strong>movie hd4u</strong>, you are presented with accurate, real-time availability across major OTT platforms like Netflix, Amazon Prime Video, Disney+, and Max. You no longer need to bounce between five different apps to find out where a movie is streaming; the <strong>hd4u movie</strong> platform does the heavy lifting for you.
+          </p>
+          
+          <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">Unlocking the World of HD4U Web Series</h3>
+          <p>
+            Television has entered a golden age, and our platform is perfectly equipped to help you navigate it. The <strong>hd4u web series</strong> section is updated daily with trending shows, ensuring you never miss out on the global conversation. From gripping true-crime documentaries to expansive fantasy epics, the <strong>hd4uhub movies</strong> and series catalog is built for the modern binge-watcher.
+          </p>
+          
+          <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">Why Choose Us?</h3>
+          <p>
+            In a world saturated with generic catalogs, what makes this platform stand out? It is our dedication to the <strong>top rated movies</strong> and our relentless pursuit of visual and informational perfection. We know that when you search for <strong>hd4u movies</strong>, you aren't just looking for a list; you're looking for an experience. By combining real-time streaming data, in-depth <strong>hd4u movie review</strong> metrics, and a beautiful, distraction-free interface, we have redefined what a movie database can be.
+          </p>
+          <p>
+            Bookmark us today and make the <strong>hd4u movie hub</strong> your daily starting point for entertainment. Whether you know it as <strong>hd4uhub</strong>, <strong>hd4u hab</strong>, or just your favorite movie site, we are here to ensure your next movie night is an absolute masterpiece.
+          </p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ SECTION ═══ -->
+  <section class="py-16 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]" id="faq">
+    <div class="max-w-[800px] mx-auto px-4 sm:px-6">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">Frequently Asked Questions</h2>
+        <p class="text-[var(--color-mute)] mt-2">Everything you need to know about HD4U Movies</p>
+      </div>
+      
+      <div class="space-y-4">
+        <details class="group bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-medium text-[var(--color-ink)] hover:text-[var(--color-primary)] transition-colors">
+            <span>What is HD4U Movies?</span>
+            <svg class="w-5 h-5 text-[var(--color-mute)] transform group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-[var(--color-body)] leading-relaxed">
+            <p>HD4U Movies is a premium movie discovery platform. We serve as the ultimate hd4u movie hub, providing comprehensive details, cast information, ratings, and streaming availability for the latest Hollywood, Bollywood, and international films.</p>
+          </div>
+        </details>
+
+        <details class="group bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-medium text-[var(--color-ink)] hover:text-[var(--color-primary)] transition-colors">
+            <span>How can I find where to watch top rated movies?</span>
+            <svg class="w-5 h-5 text-[var(--color-mute)] transform group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-[var(--color-body)] leading-relaxed">
+            <p>Our platform aggregates real-time streaming data. Simply search for any title in the hd4u hub, and we will show you exactly which OTT platforms (like Netflix, Amazon Prime, or Disney+) are currently streaming it.</p>
+          </div>
+        </details>
+
+        <details class="group bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-medium text-[var(--color-ink)] hover:text-[var(--color-primary)] transition-colors">
+            <span>Does the HD4U hub feature web series?</span>
+            <svg class="w-5 h-5 text-[var(--color-mute)] transform group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-[var(--color-body)] leading-relaxed">
+            <p>Yes! The hd4u web series catalog is updated daily. You can discover trending shows, read in-depth reviews, and find out where to binge-watch your favorite series in stunning 4k quality.</p>
+          </div>
+        </details>
+
+        <details class="group bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-medium text-[var(--color-ink)] hover:text-[var(--color-primary)] transition-colors">
+            <span>Is it free to read hd4u movie reviews and check ratings?</span>
+            <svg class="w-5 h-5 text-[var(--color-mute)] transform group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-[var(--color-body)] leading-relaxed">
+            <p>Absolutely. Exploring the hd4uhub movies directory, checking IMDb ratings, and reading movie synopses is completely free for all cinema lovers.</p>
+          </div>
+        </details>
+
+        <details class="group bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none font-medium text-[var(--color-ink)] hover:text-[var(--color-primary)] transition-colors">
+            <span>How often are new movies added to the platform?</span>
+            <svg class="w-5 h-5 text-[var(--color-mute)] transform group-open:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-[var(--color-body)] leading-relaxed">
+            <p>Our database is continuously synced with global industry standards. New movie hd4u entries, posters, and box office stats are updated daily to ensure you have the most accurate information.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ JSON-LD Schema -->
+  <script type="application/ld+json" set:html={`
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is HD4U Movies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "HD4U Movies is a premium movie discovery platform. We serve as the ultimate hd4u movie hub, providing comprehensive details, cast information, ratings, and streaming availability for the latest Hollywood, Bollywood, and international films."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I find where to watch top rated movies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our platform aggregates real-time streaming data. Simply search for any title in the hd4u hub, and we will show you exactly which OTT platforms (like Netflix, Amazon Prime, or Disney+) are currently streaming it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the HD4U hub feature web series?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! The hd4u web series catalog is updated daily. You can discover trending shows, read in-depth reviews, and find out where to binge-watch your favorite series in stunning 4k quality."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it free to read hd4u movie reviews and check ratings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. Exploring the hd4uhub movies directory, checking IMDb ratings, and reading movie synopses is completely free for all cinema lovers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often are new movies added to the platform?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our database is continuously synced with global industry standards. New movie hd4u entries, posters, and box office stats are updated daily to ensure you have the most accurate information."
+        }
+      }
+    ]
+  }
+  `} />
+
+  <Footer slot="footer" />
+</Layout>
+
+

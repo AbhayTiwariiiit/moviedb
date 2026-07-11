@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import MovieCard from '../../components/MovieCard.astro';
+import { getPopularMovies } from '../../lib/tmdb';
+
+const currentPage = parseInt(Astro.params.page || '1');
+const tmdbData = await getPopularMovies(currentPage);
+
+const page = {
+  currentPage,
+  start: (currentPage - 1) * 20,
+  end: Math.min(currentPage * 20 - 1, tmdbData.totalResults - 1),
+  total: tmdbData.totalResults,
+  lastPage: tmdbData.totalPages,
+  data: tmdbData.results,
+  url: {
+    prev: currentPage > 1 ? `/movies/${currentPage - 1}` : undefined,
+    next: currentPage < tmdbData.totalPages ? `/movies/${currentPage + 1}` : undefined
+  }
+};
+---
+
+<Layout title={`All Movies - Page ${page.currentPage}`}>
+  <Navbar slot="navbar" />
+
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-12 min-h-[60vh]">
+    <!-- Header -->
+    <div class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+      <div>
+        <nav class="flex items-center gap-2 text-xs text-[var(--color-mute)] mb-4">
+          <a href="/" class="hover:text-[var(--color-ink)] transition-colors">Home</a>
+          <span>›</span>
+          <span class="text-[var(--color-body)]">All Titles</span>
+        </nav>
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight mb-2">All Movies & Series<span class="text-gradient">.</span></h1>
+        <p class="text-base text-[var(--color-body)]">Explore our complete collection of titles.</p>
+      </div>
+      <p class="text-sm text-[var(--color-mute)] font-mono shrink-0">
+        Showing {page.start + 1}-{page.end + 1} of {page.total}
+      </p>
+    </div>
+
+    <!-- Movie Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-12">
+      {page.data.map((movie: any) => <MovieCard {...movie} />)}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="flex items-center justify-center gap-4">
+      {page.url.prev ? (
+        <a href={page.url.prev} class="px-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-hairline)] text-sm font-medium hover:bg-[var(--color-surface-hover)] transition-colors">
+          ← Previous
+        </a>
+      ) : (
+        <span class="px-4 py-2 rounded-lg bg-[var(--color-canvas)] border border-[var(--color-hairline)] text-sm font-medium text-[var(--color-mute)] cursor-not-allowed">
+          ← Previous
+        </span>
+      )}
+      
+      <span class="text-sm font-mono text-[var(--color-body)]">
+        Page {page.currentPage} of {page.lastPage}
+      </span>
+
+      {page.url.next ? (
+        <a href={page.url.next} class="px-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-hairline)] text-sm font-medium hover:bg-[var(--color-surface-hover)] transition-colors">
+          Next →
+        </a>
+      ) : (
+        <span class="px-4 py-2 rounded-lg bg-[var(--color-canvas)] border border-[var(--color-hairline)] text-sm font-medium text-[var(--color-mute)] cursor-not-allowed">
+          Next →
+        </span>
+      )}
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</Layout>

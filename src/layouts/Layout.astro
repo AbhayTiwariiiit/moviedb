@@ -1,0 +1,61 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description = "Discover, explore and find where to watch your favorite movies, TV shows, and web series. HD4U Movies — your premium movie discovery platform.", image } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- SEO -->
+    <title>{title} | HD4U Movies</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="hd4u movies, hd4u hab, hd4u movie, hd4u hub, hd4u movie hub, hd4u movies hub, hub hd4u, movie hd4u, hu hd4u, hd4u web series, hd4u movie review, hd4uhub movies, hd4uhub movie, 4k movies, top rated movies, bollywood, hollywood, streaming" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="HD4U Movies" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} | HD4U Movies`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="HD4U Movies" />
+    <meta property="og:locale" content="en_US" />
+    {image && <meta property="og:image" content={image} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={`${title} | HD4U Movies`} />
+    <meta name="twitter:description" content={description} />
+    {image && <meta name="twitter:image" content={image} />}
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+    <!-- Global Styles -->
+    <style>
+      @import "../styles/global.css";
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <slot name="navbar" />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>

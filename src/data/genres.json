@@ -1,0 +1,18 @@
+[
+  { "slug": "action", "name": "Action", "icon": "⚡" },
+  { "slug": "adventure", "name": "Adventure", "icon": "🗺️" },
+  { "slug": "animation", "name": "Animation", "icon": "🎨" },
+  { "slug": "comedy", "name": "Comedy", "icon": "😂" },
+  { "slug": "crime", "name": "Crime", "icon": "🔫" },
+  { "slug": "drama", "name": "Drama", "icon": "🎭" },
+  { "slug": "fantasy", "name": "Fantasy", "icon": "🧙" },
+  { "slug": "horror", "name": "Horror", "icon": "👻" },
+  { "slug": "mystery", "name": "Mystery", "icon": "🔍" },
+  { "slug": "romance", "name": "Romance", "icon": "❤️" },
+  { "slug": "sci-fi", "name": "Sci-Fi", "icon": "🚀" },
+  { "slug": "thriller", "name": "Thriller", "icon": "😱" },
+  { "slug": "history", "name": "History", "icon": "📜" },
+  { "slug": "documentary", "name": "Documentary", "icon": "📹" },
+  { "slug": "family", "name": "Family", "icon": "👨‍👩‍👧‍👦" },
+  { "slug": "war", "name": "War", "icon": "⚔️" }
+]

@@ -1,0 +1,8 @@
+[
+  { "slug": "bollywood-movies", "name": "Bollywood", "description": "Latest Hindi movies from the Indian film industry" },
+  { "slug": "hollywood-movies", "name": "Hollywood", "description": "English-language movies from major studios worldwide" },
+  { "slug": "south-hindi-movies", "name": "South Indian", "description": "Telugu, Tamil, Kannada & Malayalam movies dubbed in Hindi" },
+  { "slug": "hindi-dubbed", "name": "Hindi Dubbed", "description": "International movies dubbed in Hindi" },
+  { "slug": "web-series", "name": "Web Series", "description": "Latest web series and TV shows from all platforms" },
+  { "slug": "tv-shows", "name": "TV Shows", "description": "Popular television shows and daily soaps" }
+]

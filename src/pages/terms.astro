@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Terms of Service" description="Terms of Service and conditions of use for HD4U Movies.">
+  <Navbar slot="navbar" />
+  
+  <div class="pt-28 pb-16 min-h-screen">
+    <div class="max-w-[800px] mx-auto px-4 sm:px-6">
+      
+      <div class="mb-12">
+        <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-link)] mb-2">Legal</p>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--color-ink)] mb-4">Terms of Service</h1>
+        <p class="text-[var(--color-mute)]">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      </div>
+
+      <div class="prose prose-invert max-w-none text-sm text-[var(--color-body)] leading-loose">
+        <p>
+          Welcome to HD4U Movies. These terms and conditions outline the rules and regulations for the use of our website. By accessing this website we assume you accept these terms and conditions. Do not continue to use HD4U Movies if you do not agree to take all of the terms and conditions stated on this page.
+        </p>
+
+        <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">License</h3>
+        <p>
+          Unless otherwise stated, HD4U Movies and/or its licensors own the intellectual property rights for all material on HD4U Movies. All intellectual property rights are reserved. You may access this from HD4U Movies for your own personal use subjected to restrictions set in these terms and conditions.
+        </p>
+        
+        <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">Content Liability</h3>
+        <p>
+          We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend us against all claims that is rising on your Website. No link(s) should appear on any Website that may be interpreted as libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.
+        </p>
+
+        <h3 class="text-lg font-semibold text-[var(--color-ink)] mt-8 mb-3">Disclaimer</h3>
+        <p>
+          To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:
+        </p>
+        <ul class="list-disc pl-5 my-4 space-y-2">
+          <li>limit or exclude our or your liability for death or personal injury;</li>
+          <li>limit or exclude our or your liability for fraud or fraudulent misrepresentation;</li>
+          <li>limit any of our or your liabilities in any way that is not permitted under applicable law; or</li>
+          <li>exclude any of our or your liabilities that may not be excluded under applicable law.</li>
+        </ul>
+        <p>
+          HD4U Movies acts purely as a discovery index and directory. We do not host, store, or stream any copyrighted material on our servers. All information provided relies on public APIs (like TMDB) and user aggregation.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</Layout>

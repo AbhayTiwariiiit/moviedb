@@ -1,0 +1,22 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+package-lock.json
+
+# environment variables
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# IDE
+.gemini/
+.vscode/
+
+# Project specific
+skills-lock.json
+.agents/

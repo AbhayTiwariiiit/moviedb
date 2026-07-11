@@ -1,0 +1,150 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/category/bollywood-movies", label: "Bollywood" },
+  { href: "/category/hollywood-movies", label: "Hollywood" },
+  { href: "/category/south-hindi-movies", label: "South" },
+  { href: "/category/web-series", label: "Web Series" },
+  { href: "/category/hindi-dubbed", label: "Dubbed" },
+];
+
+const genreLinks = [
+  { href: "/genre/action", label: "Action" },
+  { href: "/genre/comedy", label: "Comedy" },
+  { href: "/genre/drama", label: "Drama" },
+  { href: "/genre/horror", label: "Horror" },
+  { href: "/genre/sci-fi", label: "Sci-Fi" },
+  { href: "/genre/thriller", label: "Thriller" },
+  { href: "/genre/romance", label: "Romance" },
+  { href: "/genre/fantasy", label: "Fantasy" },
+];
+---
+
+<!-- Navbar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-[var(--color-canvas)]/80 backdrop-blur-md border-b border-[var(--color-hairline)] supports-[backdrop-filter]:bg-[var(--color-canvas)]/60 transition-colors" id="navbar">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 shrink-0 no-underline" id="logo">
+        <img src="/favicon.svg" alt="HD4U Movies Logo" class="w-8 h-8 drop-shadow-sm group-hover:scale-105 transition-transform" />
+        <span class="text-lg font-semibold tracking-tight text-[var(--color-ink)]">HD4U<span class="text-[var(--color-mute)] font-normal ml-1 hidden sm:inline">Movies</span></span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-1" id="desktop-nav">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class:list={[
+              "px-3.5 py-2 rounded-full text-sm font-medium transition-all duration-200 no-underline",
+              currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
+                ? "bg-[var(--color-surface)] text-[var(--color-ink)] shadow-sm"
+                : "text-[var(--color-body)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)]/50"
+            ]}
+          >
+            {link.label}
+          </a>
+        ))}
+
+        <!-- Genres Dropdown -->
+        <div class="relative group" id="genres-dropdown">
+          <button class="px-3.5 py-2 rounded-full text-sm font-medium text-[var(--color-body)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)]/50 transition-all duration-200 flex items-center gap-1.5 no-underline">
+            Genres
+            <svg class="w-3.5 h-3.5 opacity-70 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="absolute top-full left-0 mt-1 py-2 w-48 rounded-lg bg-[var(--color-surface)] border border-[var(--color-hairline)] shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top scale-95 group-hover:scale-100">
+            {genreLinks.map(link => (
+              <a href={link.href} class="block px-4 py-2 text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-hover)] transition-colors no-underline">{link.label}</a>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      <!-- Right Side: Search + Mobile Menu -->
+      <div class="flex items-center gap-4">
+        <!-- Search Form -->
+        <form action="/search" method="get" class="hidden sm:flex relative group">
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Search movies..." 
+            class="pl-10 pr-4 py-2 rounded-full bg-[var(--color-surface)] border border-transparent text-sm text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:bg-[var(--color-canvas-soft)] focus:border-[var(--color-hairline-strong)] focus:ring-2 focus:ring-[var(--color-hairline)] transition-all w-48 lg:w-64 hover:bg-[var(--color-surface-hover)]"
+            required
+          />
+          <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-mute)] group-focus-within:text-[var(--color-ink)] transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </form>
+
+        <!-- Mobile Menu Button (Native HTML Details) -->
+        <details class="lg:hidden relative group">
+          <summary class="p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden" aria-label="Menu">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </summary>
+          
+          <!-- Dropdown Panel -->
+          <div class="absolute top-full right-0 mt-4 w-64 bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-2xl shadow-2xl p-4 overflow-y-auto max-h-[80vh] z-[100]">
+            <!-- Mobile Search Form -->
+            <form action="/search" method="get" class="mb-4 relative">
+              <input 
+                type="text" 
+                name="q" 
+                placeholder="Search..." 
+                class="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--color-canvas-soft)] border border-transparent text-sm text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-hairline-strong)] focus:ring-1 focus:ring-[var(--color-hairline)]"
+                required
+              />
+              <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-mute)]">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              </div>
+            </form>
+
+            <nav class="flex flex-col gap-1">
+              {navLinks.map(link => (
+                <a
+                  href={link.href}
+                  class:list={[
+                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline",
+                    currentPath === link.href
+                      ? "bg-[var(--color-surface-active)] text-[var(--color-ink)]"
+                      : "text-[var(--color-body)] hover:text-[var(--color-ink)] hover:bg-[var(--color-canvas-soft)]"
+                  ]}
+                >
+                  {link.label}
+                </a>
+              ))}
+
+              <div class="mt-3 pt-3 border-t border-[var(--color-hairline)]">
+                <p class="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-[var(--color-mute)] mb-1">Genres</p>
+                {genreLinks.map(link => (
+                  <a href={link.href} class="px-3 py-2 rounded-lg text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] hover:bg-[var(--color-canvas-soft)] transition-colors block no-underline">{link.label}</a>
+                ))}
+              </div>
+            </nav>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Spacer for fixed navbar -->
+<div class="h-16"></div>
+
+<script is:inline>
+  // Navbar scroll effect
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+    
+    const currentScroll = window.scrollY;
+    if (currentScroll > 50) {
+      navbar.classList.add('border-b', 'border-[var(--color-hairline)]');
+    } else {
+      navbar.classList.remove('border-b', 'border-[var(--color-hairline)]');
+    }
+    lastScroll = currentScroll;
+  });
+</script>

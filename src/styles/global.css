@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   HD4U MOVIES — Design System (Tailwind CSS v4)
+   Inspired by Vercel's design language, adapted for dark-first movie UI
+   ═══════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Brand Colors (Dark-first, Vercel-inspired) ── */
+  --color-canvas: #000000;
+  --color-canvas-soft: #0a0a0a;
+  --color-canvas-soft-2: #111111;
+  --color-surface: #141414;
+  --color-surface-hover: #1a1a1a;
+  --color-surface-active: #222222;
+
+  --color-ink: #fafafa;
+  --color-body: #a1a1a1;
+  --color-mute: #666666;
+  --color-hairline: #262626;
+  --color-hairline-strong: #404040;
+
+  /* ── Primary & Accent ── */
+  --color-primary: #ffffff;
+  --color-on-primary: #000000;
+  --color-link: #0070f3;
+  --color-link-deep: #0761d1;
+
+  /* ── Semantic ── */
+  --color-success: #00c853;
+  --color-error: #ee0000;
+  --color-error-soft: #3d1111;
+  --color-warning: #f5a623;
+  --color-warning-soft: #3d2e11;
+
+  /* ── Brand Gradient (Vercel mesh) ── */
+  --color-gradient-start: #007cf0;
+  --color-gradient-mid: #7928ca;
+  --color-gradient-end: #ff0080;
+  --color-gradient-warm: #f9cb28;
+
+  /* ── Rating Colors ── */
+  --color-rating-high: #21d07a;
+  --color-rating-mid: #d2d531;
+  --color-rating-low: #db2360;
+
+  /* ── Quality Colors ── */
+  --color-quality-4k: #7928ca;
+  --color-quality-imax: #ff0080;
+  --color-quality-1080: #0070f3;
+  --color-quality-720: #00c853;
+  --color-quality-480: #f5a623;
+  --color-quality-hdrip: #666666;
+
+  /* ── Platform Colors ── */
+  --color-netflix: #e50914;
+  --color-prime: #00a8e1;
+  --color-hotstar: #1f2c67;
+  --color-hbo: #b81dee;
+  --color-disney: #113ccf;
+  --color-apple: #a2aaad;
+  --color-zee5: #8230c6;
+
+  /* ── Spacing (4px base unit) ── */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 40px;
+  --spacing-3xl: 48px;
+  --spacing-4xl: 64px;
+  --spacing-5xl: 96px;
+  --spacing-6xl: 128px;
+
+  /* ── Border Radius ── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 100px;
+  --radius-full: 9999px;
+
+  /* ── Typography ── */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+
+  /* ── Shadows (Vercel stacked shadows for dark mode) ── */
+  --shadow-sm: 0px 1px 2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  --shadow-md: 0px 2px 4px rgba(0, 0, 0, 0.4), 0px 4px 8px -2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  --shadow-lg: 0px 4px 8px rgba(0, 0, 0, 0.4), 0px 8px 16px -4px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  --shadow-xl: 0px 8px 16px rgba(0, 0, 0, 0.4), 0px 16px 32px -8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  --shadow-glow: 0 0 20px rgba(0, 112, 243, 0.15), 0 0 40px rgba(121, 40, 202, 0.1);
+
+  /* ── Animations ── */
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.4s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+  --animate-shimmer: shimmer 2s infinite linear;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* ── Base Styles ── */
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  /* ── Typography Scale (Vercel-inspired) ── */
+  h1 {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 48px;
+    letter-spacing: -2.4px;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 40px;
+    letter-spacing: -1.28px;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+    letter-spacing: -0.96px;
+  }
+
+  h4 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: -0.6px;
+  }
+
+  ::selection {
+    background-color: rgba(0, 112, 243, 0.3);
+    color: #ffffff;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-canvas);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-hairline-strong);
+    border-radius: var(--radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-mute);
+  }
+}
+
+/* ── Utility Classes ── */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-mid), var(--color-gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-mesh-gradient {
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(0, 124, 240, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(121, 40, 202, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(255, 0, 128, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 30%, rgba(249, 203, 40, 0.08) 0%, transparent 50%);
+  }
+
+  .glass {
+    background: rgba(20, 20, 20, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-strong {
+    background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .shimmer-bg {
+    background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-surface-hover) 50%, var(--color-surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .line-clamp-1 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+  .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .line-clamp-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}

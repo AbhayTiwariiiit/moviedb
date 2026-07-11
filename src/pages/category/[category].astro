@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import MovieCard from '../../components/MovieCard.astro';
+import movies from '../../data/movies.json';
+import categories from '../../data/categories.json';
+
+import { getMoviesByCategory } from '../../lib/tmdb';
+
+const { category: catSlug } = Astro.params;
+const category = categories.find(c => c.slug === catSlug);
+
+if (!category) {
+  return Astro.redirect('/404');
+}
+
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1');
+const tmdbData = await getMoviesByCategory(catSlug || '', currentPage);
+
+const categoryMovies = tmdbData.results;
+const totalResults = tmdbData.totalResults;
+const totalPages = tmdbData.totalPages;
+---
+
+<Layout title={category.name} description={category.description}>
+  <Navbar slot="navbar" />
+
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
+    <!-- Header -->
+    <div class="mb-10">
+      <nav class="flex items-center gap-2 text-xs text-[var(--color-mute)] mb-4">
+        <a href="/" class="hover:text-[var(--color-ink)] transition-colors">Home</a>
+        <span>›</span>
+        <span class="text-[var(--color-body)]">{category.name}</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight mb-2">{category.name}<span class="text-gradient">.</span></h1>
+      <p class="text-base text-[var(--color-body)]">{category.description}</p>
+      <p class="text-sm text-[var(--color-mute)] mt-2 font-mono">{totalResults} titles found</p>
+    </div>
+
+    <!-- Movie Grid -->
+    {categoryMovies.length > 0 ? (
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {categoryMovies.map((movie: any) => <MovieCard {...movie} />)}
+      </div>
+    ) : (
+      <!-- Empty State -->
+      <div class="text-center py-20 bg-[var(--color-surface)] rounded-2xl border border-[var(--color-hairline)]">
+        <p class="text-6xl mb-4">🎬</p>
+        <p class="text-xl font-semibold text-[var(--color-ink)] mb-2">Coming Soon</p>
+        <p class="text-sm text-[var(--color-mute)]">We're currently adding movies to this category.</p>
+      </div>
+    )}
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <div class="mt-12 flex justify-center items-center gap-4">
+        {currentPage > 1 ? (
+          <a
+            href={`/category/${catSlug}?page=${currentPage - 1}`}
+            class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Previous
+          </a>
+        ) : (
+          <span class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline)] text-[var(--color-mute)] cursor-not-allowed">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Previous
+          </span>
+        )}
+        
+        <span class="text-sm font-medium text-[var(--color-mute)]">
+          Page <span class="text-[var(--color-ink)]">{currentPage}</span> of {totalPages}
+        </span>
+        
+        {currentPage < totalPages ? (
+          <a
+            href={`/category/${catSlug}?page=${currentPage + 1}`}
+            class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors"
+          >
+            Next
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        ) : (
+          <span class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline)] text-[var(--color-mute)] cursor-not-allowed">
+            Next
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </span>
+        )}
+      </div>
+    )}
+  </div>
+
+  <Footer slot="footer" />
+</Layout>

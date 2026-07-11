@@ -1,0 +1,269 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import MovieCard from '../../components/MovieCard.astro';
+import { getMovieDetails, getPopularMovies } from '../../lib/tmdb';
+
+const { slug } = Astro.params;
+const movie = await getMovieDetails(slug || '');
+
+// Fallback related movies to trending/popular if TMDB doesn't return related
+const popular = await getPopularMovies(1);
+const relatedMovies = popular.results
+  .filter((m: any) => m.id !== movie.id)
+  .slice(0, 6);
+
+const qualityColors: Record<string, string> = {
+  "IMAX": "var(--color-quality-imax)",
+  "4K": "var(--color-quality-4k)",
+  "1080p": "var(--color-quality-1080)",
+  "720p": "var(--color-quality-720)",
+  "480p": "var(--color-quality-480)",
+  "HDRip": "var(--color-quality-hdrip)",
+};
+
+const platformColors: Record<string, string> = {
+  "Netflix": "var(--color-netflix)",
+  "Amazon Prime": "var(--color-prime)",
+  "Hotstar": "var(--color-hotstar)",
+  "HBO Max": "var(--color-hbo)",
+  "Disney+": "var(--color-disney)",
+  "Apple TV+": "var(--color-apple)",
+  "Zee5": "var(--color-zee5)",
+  "Jio Cinema": "#0a3d91",
+};
+
+const platformUrls: Record<string, string> = {
+  "Netflix": "https://www.netflix.com",
+  "Amazon Prime": "https://www.primevideo.com",
+  "Hotstar": "https://www.hotstar.com",
+  "HBO Max": "https://www.max.com",
+  "Disney+": "https://www.disneyplus.com",
+  "Apple TV+": "https://tv.apple.com",
+  "Zee5": "https://www.zee5.com",
+  "Jio Cinema": "https://www.jiocinema.com",
+};
+
+const ratingColor = movie.ratings.imdb >= 7.5 ? "var(--color-rating-high)" : movie.ratings.imdb >= 5.5 ? "var(--color-rating-mid)" : "var(--color-rating-low)";
+
+const categoryLabels: Record<string, string> = {
+  "bollywood-movies": "Bollywood",
+  "hollywood-movies": "Hollywood",
+  "web-series": "Web Series",
+  "south-hindi-movies": "South Indian",
+  "hindi-dubbed": "Hindi Dubbed",
+  "tv-shows": "TV Shows",
+};
+---
+
+<Layout title={movie.title} description={movie.synopsis} image={movie.posterUrl}>
+  <Navbar slot="navbar" />
+
+  <!-- ═══ CINEMATIC HERO ═══ -->
+  <section class="relative min-h-[60vh] lg:min-h-[70vh] flex items-end overflow-hidden" id="movie-hero">
+    <!-- Backdrop Image -->
+    <div class="absolute inset-0">
+      <img src={movie.backdropUrl} alt={movie.title} class="w-full h-full object-cover" loading="eager" onerror="this.style.display='none'" />
+      <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-canvas)] via-[var(--color-canvas)]/80 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-canvas)] via-transparent to-transparent"></div>
+    </div>
+
+    <div class="relative max-w-[1400px] mx-auto px-4 sm:px-6 py-12 w-full">
+      <!-- Breadcrumbs -->
+      <nav class="flex items-center gap-2 text-xs text-[var(--color-mute)] mb-6" aria-label="breadcrumb">
+        <a href="/" class="hover:text-[var(--color-ink)] transition-colors">Home</a>
+        <span>›</span>
+        <a href={`/category/${movie.category}`} class="hover:text-[var(--color-ink)] transition-colors">{categoryLabels[movie.category] || movie.category}</a>
+        <span>›</span>
+        <span class="text-[var(--color-body)]">{movie.title}</span>
+      </nav>
+
+      <div class="flex flex-col lg:flex-row gap-8 items-start">
+        <!-- Poster -->
+        <div class="shrink-0 w-48 sm:w-56 lg:w-64 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10 hidden sm:block">
+          <img src={movie.posterUrl} alt={movie.title} class="w-full aspect-[2/3] object-cover" loading="eager" onerror="this.style.display='none'" />
+        </div>
+
+        <!-- Info -->
+        <div class="flex-1">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            {movie.genres.map((g: string) => (
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--color-surface)] border border-[var(--color-hairline)] text-[var(--color-body)]">{g}</span>
+            ))}
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-3" style="letter-spacing: -0.04em">{movie.title}</h1>
+          
+          {movie.tagline && (
+            <p class="text-lg text-[var(--color-body)] italic mb-4">"{movie.tagline}"</p>
+          )}
+
+          <!-- Quick Stats Row -->
+          <div class="flex flex-wrap items-center gap-4 text-sm text-[var(--color-body)] mb-6">
+            <div class="flex items-center gap-1.5">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white border-2" style={`border-color: ${ratingColor}; background: rgba(0,0,0,0.6)`}>
+                {movie.ratings.imdb}
+              </div>
+              <span class="text-xs text-[var(--color-mute)]">IMDb</span>
+            </div>
+            <span class="w-px h-5 bg-[var(--color-hairline)]"></span>
+            <span>🕐 {movie.runtime} min</span>
+            <span class="w-px h-5 bg-[var(--color-hairline)]"></span>
+            <span>📅 {movie.releaseDate}</span>
+            <span class="w-px h-5 bg-[var(--color-hairline)]"></span>
+            <span class="px-2 py-0.5 rounded text-xs font-bold bg-[var(--color-surface)] border border-[var(--color-hairline)]">{movie.certification}</span>
+          </div>
+
+          <!-- Language Badges -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            {movie.language.map((lang: string) => (
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-[var(--color-surface)] border border-[var(--color-hairline)] text-[var(--color-ink)]">
+                🌐 {lang}
+              </span>
+            ))}
+          </div>
+
+          <!-- Synopsis -->
+          <p class="text-base text-[var(--color-body)] leading-relaxed w-full max-w-[1000px] mb-6">{movie.synopsis}</p>
+
+          <!-- Director & Key Info -->
+          <div class="flex flex-wrap gap-6 text-sm">
+            <div>
+              <span class="text-[var(--color-mute)] font-mono text-xs uppercase tracking-wider">Director</span>
+              <p class="text-[var(--color-ink)] font-medium mt-0.5">{movie.director}</p>
+            </div>
+            <div>
+              <span class="text-[var(--color-mute)] font-mono text-xs uppercase tracking-wider">Year</span>
+              <p class="text-[var(--color-ink)] font-medium mt-0.5">{movie.year}</p>
+            </div>
+            <div>
+              <span class="text-[var(--color-mute)] font-mono text-xs uppercase tracking-wider">Category</span>
+              <p class="text-[var(--color-ink)] font-medium mt-0.5">{categoryLabels[movie.category] || movie.category}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DETAIL SECTIONS ═══ -->
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
+
+    <!-- Rating Cards -->
+    <section class="mb-12" id="ratings-section">
+      <h2 class="text-xl font-semibold tracking-tight mb-6">Ratings & scores.</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-[var(--color-surface)] rounded-xl p-6 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-2">IMDb Rating</p>
+          <div class="flex items-end gap-2">
+            <span class="text-4xl font-semibold" style={`color: ${ratingColor}`}>{movie.ratings.imdb}</span>
+            <span class="text-lg text-[var(--color-mute)] mb-1">/10</span>
+          </div>
+        </div>
+        <div class="bg-[var(--color-surface)] rounded-xl p-6 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-2">Rotten Tomatoes</p>
+          <div class="flex items-end gap-2">
+            <span class="text-4xl font-semibold text-[var(--color-rating-high)]">{movie.ratings.rottenTomatoes}%</span>
+            <span class="text-sm text-[var(--color-mute)] mb-1">🍅</span>
+          </div>
+        </div>
+        <div class="bg-[var(--color-surface)] rounded-xl p-6 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-2">Metacritic</p>
+          <div class="flex items-end gap-2">
+            <span class="text-4xl font-semibold text-[var(--color-link)]">{movie.ratings.metacritic}</span>
+            <span class="text-lg text-[var(--color-mute)] mb-1">/100</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cast -->
+    <section class="mb-12" id="cast-section">
+      <h2 class="text-xl font-semibold tracking-tight mb-6">Cast & crew.</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {movie.cast.map((actor: any) => (
+          <div class="bg-[var(--color-surface)] rounded-xl p-4 border border-[var(--color-hairline)] text-center">
+            <div class="w-16 h-16 rounded-full bg-[var(--color-canvas-soft-2)] mx-auto mb-3 flex items-center justify-center text-2xl">
+              🎭
+            </div>
+            <p class="text-sm font-medium text-[var(--color-ink)] line-clamp-1">{actor.name}</p>
+            <p class="text-xs text-[var(--color-mute)] mt-0.5 line-clamp-1">{actor.character}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Available Qualities -->
+    <section class="mb-12" id="quality-section">
+      <h2 class="text-xl font-semibold tracking-tight mb-6">Available qualities.</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        {movie.quality.map((q: string) => (
+          <div class="bg-[var(--color-surface)] rounded-xl p-4 border border-[var(--color-hairline)] hover:border-[var(--color-hairline-strong)] transition-colors group cursor-pointer">
+            <div class="flex items-center justify-between mb-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-bold uppercase text-white" style={`background-color: ${qualityColors[q] || "var(--color-mute)"}`}>{q}</span>
+            </div>
+            <p class="text-sm text-[var(--color-body)]">{(movie.fileSize as any)[q] || "N/A"}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Where to Watch -->
+    <section class="mb-12" id="platforms-section">
+      <h2 class="text-xl font-semibold tracking-tight mb-6">Where to watch.</h2>
+      <div class="flex flex-wrap gap-3">
+        {movie.platforms.map((platform: string) => (
+          <a
+            href={platformUrls[platform] || `https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}+on+${encodeURIComponent(platform)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-3 px-5 py-3 rounded-xl border border-[var(--color-hairline)] hover:border-[var(--color-hairline-strong)] transition-all duration-200 cursor-pointer group no-underline"
+            style={`background: linear-gradient(135deg, ${platformColors[platform] || "var(--color-surface)"}15, var(--color-surface))`}
+          >
+            <div class="w-3 h-3 rounded-full" style={`background-color: ${platformColors[platform] || "var(--color-mute)"}`}></div>
+            <span class="text-sm font-medium text-[var(--color-ink)]">{platform}</span>
+            <svg class="w-4 h-4 text-[var(--color-mute)] opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Box Office -->
+    <section class="mb-12" id="box-office-section">
+      <h2 class="text-xl font-semibold tracking-tight mb-6">Box office & stats.</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="bg-[var(--color-surface)] rounded-xl p-5 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-1">Budget</p>
+          <p class="text-xl font-semibold text-[var(--color-ink)]">{movie.boxOffice.budget}</p>
+        </div>
+        <div class="bg-[var(--color-surface)] rounded-xl p-5 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-1">Worldwide</p>
+          <p class="text-xl font-semibold text-[var(--color-success)]">{movie.boxOffice.worldwide}</p>
+        </div>
+        <div class="bg-[var(--color-surface)] rounded-xl p-5 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-1">Runtime</p>
+          <p class="text-xl font-semibold text-[var(--color-ink)]">{movie.runtime} min</p>
+        </div>
+        <div class="bg-[var(--color-surface)] rounded-xl p-5 border border-[var(--color-hairline)]">
+          <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-mute)] mb-1">Release</p>
+          <p class="text-xl font-semibold text-[var(--color-ink)]">{movie.releaseDate}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Movies -->
+    {relatedMovies.length > 0 && (
+      <section id="related-section">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-xl font-semibold tracking-tight">You might also like.</h2>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {relatedMovies.map(m => <MovieCard {...m} />)}
+        </div>
+      </section>
+    )}
+  </div>
+
+  <Footer slot="footer" />
+</Layout>

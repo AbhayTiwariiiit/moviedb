@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import MovieCard from '../../components/MovieCard.astro';
+import movies from '../../data/movies.json';
+import genres from '../../data/genres.json';
+
+import { getMoviesByGenre } from '../../lib/tmdb';
+
+const { genre: genreSlug } = Astro.params;
+const genre = genres.find(g => g.slug === genreSlug);
+
+if (!genre) {
+  return Astro.redirect('/404');
+}
+
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1');
+const tmdbData = await getMoviesByGenre(genreSlug || '', currentPage);
+
+const genreMovies = tmdbData.results;
+const totalResults = tmdbData.totalResults;
+const totalPages = tmdbData.totalPages;
+---
+
+<Layout title={`${genre.name} Movies`} description={`Browse the best ${genre.name} movies, TV shows, and web series.`}>
+  <Navbar slot="navbar" />
+
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-12">
+    <!-- Header -->
+    <div class="mb-10">
+      <nav class="flex items-center gap-2 text-xs text-[var(--color-mute)] mb-4">
+        <a href="/" class="hover:text-[var(--color-ink)] transition-colors">Home</a>
+        <span>›</span>
+        <span class="text-[var(--color-body)]">Genre</span>
+        <span>›</span>
+        <span class="text-[var(--color-body)]">{genre.name}</span>
+      </nav>
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-3xl sm:text-4xl">{genre.icon}</span>
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">{genre.name} Movies<span class="text-gradient">.</span></h1>
+      </div>
+      <p class="text-base text-[var(--color-body)]">Explore the best {genre.name.toLowerCase()} movies and shows.</p>
+      <p class="text-sm text-[var(--color-mute)] mt-2 font-mono">{totalResults} titles found</p>
+    </div>
+
+    <!-- Movie Grid -->
+    {genreMovies.length > 0 ? (
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {genreMovies.map((movie: any) => <MovieCard {...movie} />)}
+      </div>
+    ) : (
+      <!-- Empty State -->
+      <div class="text-center py-20 bg-[var(--color-surface)] rounded-2xl border border-[var(--color-hairline)]">
+        <p class="text-6xl mb-4">🎬</p>
+        <p class="text-xl font-semibold text-[var(--color-ink)] mb-2">Coming Soon</p>
+        <p class="text-sm text-[var(--color-mute)]">We're currently adding movies to this genre.</p>
+      </div>
+    )}
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <div class="mt-12 flex justify-center items-center gap-4">
+        {currentPage > 1 ? (
+          <a
+            href={`/genre/${genreSlug}?page=${currentPage - 1}`}
+            class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Previous
+          </a>
+        ) : (
+          <span class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline)] text-[var(--color-mute)] cursor-not-allowed">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Previous
+          </span>
+        )}
+        
+        <span class="text-sm font-medium text-[var(--color-mute)]">
+          Page <span class="text-[var(--color-ink)]">{currentPage}</span> of {totalPages}
+        </span>
+        
+        {currentPage < totalPages ? (
+          <a
+            href={`/genre/${genreSlug}?page=${currentPage + 1}`}
+            class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline-strong)] text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors"
+          >
+            Next
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        ) : (
+          <span class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-[var(--color-hairline)] text-[var(--color-mute)] cursor-not-allowed">
+            Next
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </span>
+        )}
+      </div>
+    )}
+
+    <!-- Other Genres -->
+    <div class="mt-16 pt-12 border-t border-[var(--color-hairline)]">
+      <h2 class="text-xl font-semibold tracking-tight mb-6">Other genres.</h2>
+      <div class="flex flex-wrap gap-2">
+        {genres.filter(g => g.slug !== genre.slug).map(g => (
+          <a
+            href={`/genre/${g.slug}`}
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] text-sm text-[var(--color-body)] hover:text-[var(--color-ink)] hover:border-[var(--color-hairline-strong)] transition-all duration-200"
+          >
+            <span>{g.icon}</span> {g.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</Layout>

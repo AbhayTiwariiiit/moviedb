@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Contact Us" description="Get in touch with the HD4U Movies team.">
+  <Navbar slot="navbar" />
+  
+  <div class="pt-28 pb-16 min-h-screen relative overflow-hidden">
+    <!-- Background accents -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-gradient-start)] opacity-[0.03] rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--color-gradient-end)] opacity-[0.03] rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="max-w-[600px] mx-auto px-4 sm:px-6 relative z-10">
+      
+      <div class="text-center mb-12">
+        <p class="text-xs font-mono uppercase tracking-wider text-[var(--color-link)] mb-2">Get in touch</p>
+        <h1 class="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--color-ink)] mb-4">Contact Us</h1>
+        <p class="text-lg text-[var(--color-mute)]">Have questions, feedback, or business inquiries? Drop us a line below.</p>
+      </div>
+
+      <div class="bg-[var(--color-surface)] border border-[var(--color-hairline)] rounded-2xl p-6 sm:p-10 shadow-xl">
+        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Message sent! This is a demo form.');">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <label for="firstName" class="block text-sm font-medium text-[var(--color-ink)]">First Name</label>
+              <input type="text" id="firstName" class="w-full px-4 py-3 bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-link)] focus:ring-1 focus:ring-[var(--color-link)] transition-colors" placeholder="John" required />
+            </div>
+            <div class="space-y-2">
+              <label for="lastName" class="block text-sm font-medium text-[var(--color-ink)]">Last Name</label>
+              <input type="text" id="lastName" class="w-full px-4 py-3 bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-link)] focus:ring-1 focus:ring-[var(--color-link)] transition-colors" placeholder="Doe" />
+            </div>
+          </div>
+          
+          <div class="space-y-2">
+            <label for="email" class="block text-sm font-medium text-[var(--color-ink)]">Email Address</label>
+            <input type="email" id="email" class="w-full px-4 py-3 bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-link)] focus:ring-1 focus:ring-[var(--color-link)] transition-colors" placeholder="john@example.com" required />
+          </div>
+          
+          <div class="space-y-2">
+            <label for="subject" class="block text-sm font-medium text-[var(--color-ink)]">Subject</label>
+            <select id="subject" class="w-full px-4 py-3 bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-link)] focus:ring-1 focus:ring-[var(--color-link)] transition-colors">
+              <option>General Inquiry</option>
+              <option>DMCA / Copyright</option>
+              <option>Advertising & Sponsorship</option>
+              <option>Bug Report</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label for="message" class="block text-sm font-medium text-[var(--color-ink)]">Message</label>
+            <textarea id="message" rows="5" class="w-full px-4 py-3 bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-link)] focus:ring-1 focus:ring-[var(--color-link)] transition-colors resize-none" placeholder="How can we help you?" required></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-4 bg-gradient-to-r from-[var(--color-gradient-start)] to-[var(--color-gradient-mid)] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-[var(--color-gradient-start)]/20">
+            Send Message
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</Layout>

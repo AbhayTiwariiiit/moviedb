@@ -1,0 +1,91 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  year: number;
+  posterUrl: string;
+  genres: string[];
+  ratings: { imdb: number };
+  quality: string[];
+  language: string[];
+  category: string;
+  size?: "default" | "large";
+}
+
+const { title, slug, year, posterUrl, genres, ratings, quality, language, category, size = "default" } = Astro.props;
+
+const ratingColor = ratings.imdb >= 7.5 ? "var(--color-rating-high)" : ratings.imdb >= 5.5 ? "var(--color-rating-mid)" : "var(--color-rating-low)";
+
+const qualityColors: Record<string, string> = {
+  "IMAX": "var(--color-quality-imax)",
+  "4K": "var(--color-quality-4k)",
+  "1080p": "var(--color-quality-1080)",
+  "720p": "var(--color-quality-720)",
+  "480p": "var(--color-quality-480)",
+  "HDRip": "var(--color-quality-hdrip)",
+};
+
+const topQuality = quality[0] || "720p";
+---
+
+<a href={`/movie/${slug}`} class="group block" id={`movie-card-${slug}`}>
+  <div class="relative rounded-xl overflow-hidden bg-[var(--color-surface)] shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:ring-1 group-hover:ring-[var(--color-hairline-strong)]">
+    <!-- Poster -->
+    <div class:list={["relative overflow-hidden", size === "large" ? "aspect-[2/3]" : "aspect-[2/3]"]}>
+      <img
+        src={posterUrl}
+        alt={title}
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+        onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 450%22><rect fill=%22%23141414%22 width=%22300%22 height=%22450%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23333%22 font-size=%2224%22>🎬</text></svg>'"
+      />
+
+      <!-- Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+      <!-- Top Quality Badge -->
+      <div class="absolute top-2 left-2">
+        <span
+          class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase text-white"
+          style={`background-color: ${qualityColors[topQuality] || "var(--color-mute)"}`}
+        >
+          {topQuality}
+        </span>
+      </div>
+
+      <!-- Rating Badge -->
+      <div class="absolute top-2 right-2">
+        <div
+          class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white border-2"
+          style={`border-color: ${ratingColor}; background: rgba(0,0,0,0.7)`}
+        >
+          {ratings.imdb}
+        </div>
+      </div>
+
+      <!-- Hover Info Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <div class="flex flex-wrap gap-1 mb-2">
+          {genres.slice(0, 2).map(g => (
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/15 text-white backdrop-blur-sm">{g}</span>
+          ))}
+        </div>
+        <div class="flex flex-wrap gap-1">
+          {quality.slice(0, 3).map(q => (
+            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase" style={`background-color: ${qualityColors[q] || "var(--color-mute)"}20; color: ${qualityColors[q] || "var(--color-mute)"}`}>{q}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="p-3">
+      <h3 class="text-sm font-semibold text-[var(--color-ink)] line-clamp-1 group-hover:text-white transition-colors tracking-tight">{title}</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="text-xs text-[var(--color-mute)]">{year}</span>
+        <span class="w-1 h-1 rounded-full bg-[var(--color-hairline-strong)]"></span>
+        <span class="text-xs text-[var(--color-mute)] line-clamp-1">{language[0]}</span>
+      </div>
+    </div>
+  </div>
+</a>

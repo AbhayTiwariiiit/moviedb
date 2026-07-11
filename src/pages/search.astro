@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import MovieCard from '../components/MovieCard.astro';
+import { searchMovies } from '../lib/tmdb';
+
+const query = Astro.url.searchParams.get('q') || '';
+let results = [];
+let totalPages = 0;
+
+if (query) {
+  const searchData = await searchMovies(query);
+  results = searchData.results;
+  totalPages = searchData.totalPages;
+}
+---
+
+<Layout title="Search Results">
+  <Navbar slot="navbar" />
+
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 py-12 min-h-[60vh]">
+    <!-- Header -->
+    <div class="mb-10">
+      <nav class="flex items-center gap-2 text-xs text-[var(--color-mute)] mb-4">
+        <a href="/" class="hover:text-[var(--color-ink)] transition-colors">Home</a>
+        <span>›</span>
+        <span class="text-[var(--color-body)]">Search</span>
+      </nav>
+      <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight mb-2">Search Results<span class="text-gradient">.</span></h1>
+      <p class="text-base text-[var(--color-body)]">
+        {query ? (
+          <>Results for <span class="text-[var(--color-ink)] font-semibold">"{query}"</span> <span class="text-[var(--color-mute)] font-mono text-sm ml-2">{results.length} found on this page</span></>
+        ) : (
+          'Please enter a search term'
+        )}
+      </p>
+    </div>
+
+    <!-- Movie Grid -->
+    {results.length > 0 ? (
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+        {results.map((movie: any) => <MovieCard {...movie} />)}
+      </div>
+    ) : query ? (
+      <!-- Empty State -->
+      <div class="text-center py-20">
+        <p class="text-6xl mb-4">🔍</p>
+        <p class="text-xl font-semibold text-[var(--color-ink)] mb-2">No results found</p>
+        <p class="text-sm text-[var(--color-mute)]">We couldn't find any movies or series matching your search.</p>
+        <a href="/" class="inline-flex items-center gap-2 px-6 py-2.5 mt-6 rounded-full bg-[var(--color-surface)] border border-[var(--color-hairline)] text-sm hover:bg-[var(--color-surface-hover)] transition-colors">
+          Back to Home
+        </a>
+      </div>
+    ) : null}
+  </div>
+
+  <Footer slot="footer" />
+</Layout>
