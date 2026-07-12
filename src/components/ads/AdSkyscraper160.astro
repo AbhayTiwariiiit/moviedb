@@ -1,12 +1,19 @@
 ---
-// 160x300 Vertical Skyscraper (Ideal for sidebars)
+// 160x300 Vertical Skyscraper (Sidebar)
 ---
-<div class="flex justify-center items-center my-4 overflow-hidden min-h-[300px] min-w-[160px]">
-  <iframe 
-    width="160" 
-    height="300" 
-    frameborder="0" 
-    scrolling="no" 
-    srcdoc="<html><body style='margin:0;padding:0;'><script>var atOptions = { 'key' : 'abe3550bdcce685d43cd3623706695f2', 'format' : 'iframe', 'height' : 300, 'width' : 160, 'params' : {} };</script><script src='https://www.highperformanceformat.com/abe3550bdcce685d43cd3623706695f2/invoke.js'></script></body></html>"
-  ></iframe>
+<div class="flex justify-center items-center my-4 overflow-hidden min-h-[300px] min-w-[160px] ad-slot-sky">
+  <script is:inline>
+    (function() {
+      var slots = document.querySelectorAll('.ad-slot-sky');
+      var container = slots[slots.length - 1];
+      if (!container || container.dataset.loaded) return;
+      container.dataset.loaded = 'true';
+      var s1 = document.createElement('script');
+      s1.text = "var atOptions = { 'key' : 'abe3550bdcce685d43cd3623706695f2', 'format' : 'iframe', 'height' : 300, 'width' : 160, 'params' : {} };";
+      container.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.src = 'https://www.highperformanceformat.com/abe3550bdcce685d43cd3623706695f2/invoke.js';
+      container.appendChild(s2);
+    })();
+  </script>
 </div>

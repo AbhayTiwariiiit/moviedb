@@ -1,12 +1,19 @@
 ---
-// 468x60 Horizontal Banner (Ideal for desktop/tablet headers or footers)
+// 468x60 Horizontal Banner
 ---
-<div class="flex justify-center items-center my-4 overflow-hidden min-h-[60px]">
-  <iframe 
-    width="468" 
-    height="60" 
-    frameborder="0" 
-    scrolling="no" 
-    srcdoc="<html><body style='margin:0;padding:0;'><script>var atOptions = { 'key' : 'c58f58a4f5202c93cf0368f49307600e', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };</script><script src='https://www.highperformanceformat.com/c58f58a4f5202c93cf0368f49307600e/invoke.js'></script></body></html>"
-  ></iframe>
+<div class="flex justify-center items-center my-4 overflow-hidden min-h-[60px] ad-slot-468">
+  <script is:inline>
+    (function() {
+      var slots = document.querySelectorAll('.ad-slot-468');
+      var container = slots[slots.length - 1];
+      if (!container || container.dataset.loaded) return;
+      container.dataset.loaded = 'true';
+      var s1 = document.createElement('script');
+      s1.text = "var atOptions = { 'key' : 'c58f58a4f5202c93cf0368f49307600e', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };";
+      container.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.src = 'https://www.highperformanceformat.com/c58f58a4f5202c93cf0368f49307600e/invoke.js';
+      container.appendChild(s2);
+    })();
+  </script>
 </div>

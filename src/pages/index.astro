@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import MovieCard from '../components/MovieCard.astro';
+import AdBanner468 from '../components/ads/AdBanner468.astro';
+import AdNative from '../components/ads/AdNative.astro';
 import { getTrendingMovies } from '../lib/tmdb';
 import movies from '../data/movies.json';
 import genres from '../data/genres.json';
@@ -99,6 +101,11 @@ const platforms = [
     </div>
   </section>
 
+  <!-- Ad Banner between Trending and Featured -->
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdBanner468 />
+  </div>
+
   <!-- ═══ FEATURED HERO CARDS ═══ -->
   <section class="py-12" id="featured">
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
@@ -164,6 +171,11 @@ const platforms = [
     </section>
   )}
 
+  <!-- Native Ad between Bollywood and Platforms -->
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdNative />
+  </div>
+
   <!-- ═══ PLATFORMS STRIP ═══ -->
   <section class="py-16 border-y border-[var(--color-hairline)]" id="platforms">
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
@@ -197,6 +209,11 @@ const platforms = [
       </div>
     </section>
   )}
+
+  <!-- Ad Banner between Hollywood and Web Series -->
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdBanner468 />
+  </div>
 
   <!-- ═══ WEB SERIES ═══ -->
   {webSeries.length > 0 && (
