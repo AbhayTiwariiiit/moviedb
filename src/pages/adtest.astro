@@ -1,15 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import AdBanner468 from '../components/ads/AdBanner468.astro';
+import AdRect300 from '../components/ads/AdRect300.astro';
+import AdBanner320 from '../components/ads/AdBanner320.astro';
 ---
 
-<Layout title="Ad Test Page" description="Testing single ad implementation">
+<Layout title="Ad Test Page" description="Testing ad implementation">
   <div class="max-w-[800px] mx-auto px-4 sm:px-6 py-12 text-center text-white">
-    <h1 class="text-3xl font-bold mb-8">Ad Test Page (Single Ad)</h1>
-    <p class="mb-8">This page only has exactly ONE ad tag to prevent any global variable collisions.</p>
+    <h1 class="text-3xl font-bold mb-8">Ad Test Page</h1>
     
-    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700">
+    <p class="mb-4 text-gray-400">468x60 Banner:</p>
+    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 mb-8">
       <AdBanner468 />
+    </div>
+
+    <p class="mb-4 text-gray-400">300x250 Rectangle:</p>
+    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 mb-8">
+      <AdRect300 />
+    </div>
+
+    <p class="mb-4 text-gray-400">320x50 Mobile Banner:</p>
+    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 mb-8">
+      <AdBanner320 />
     </div>
   </div>
 </Layout>
