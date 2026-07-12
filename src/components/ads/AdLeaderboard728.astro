@@ -1,19 +1,15 @@
 ---
 // 728x90 Leaderboard (Ideal for top/bottom of page on desktop)
 ---
-<div class="flex justify-center items-center my-6 overflow-hidden min-h-[90px] ad-slot-leader">
+<div class="flex justify-center items-center my-6 overflow-hidden min-h-[90px]">
   <script is:inline>
-    (function() {
-      var slots = document.querySelectorAll('.ad-slot-leader');
-      var container = slots[slots.length - 1];
-      if (!container || container.dataset.loaded) return;
-      container.dataset.loaded = 'true';
-      var s1 = document.createElement('script');
-      s1.text = "var atOptions = { 'key' : '6b2d57d4b459012a99894107f7417800', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };";
-      container.appendChild(s1);
-      var s2 = document.createElement('script');
-      s2.src = 'https://www.highperformanceformat.com/6b2d57d4b459012a99894107f7417800/invoke.js';
-      container.appendChild(s2);
-    })();
+    atOptions = {
+      'key' : '6b2d57d4b459012a99894107f7417800',
+      'format' : 'iframe',
+      'height' : 90,
+      'width' : 728,
+      'params' : {}
+    };
   </script>
+  <script is:inline src="https://www.highperformanceformat.com/6b2d57d4b459012a99894107f7417800/invoke.js"></script>
 </div>

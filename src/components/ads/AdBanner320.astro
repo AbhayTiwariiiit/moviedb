@@ -1,19 +1,15 @@
 ---
 // 320x50 Horizontal Banner (Mobile)
 ---
-<div class="flex justify-center items-center my-4 overflow-hidden min-h-[50px] ad-slot-320">
+<div class="flex justify-center items-center my-4 overflow-hidden min-h-[50px]">
   <script is:inline>
-    (function() {
-      var slots = document.querySelectorAll('.ad-slot-320');
-      var container = slots[slots.length - 1];
-      if (!container || container.dataset.loaded) return;
-      container.dataset.loaded = 'true';
-      var s1 = document.createElement('script');
-      s1.text = "var atOptions = { 'key' : '87fe1b12cb1aa3fb5ac067934fcfef69', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };";
-      container.appendChild(s1);
-      var s2 = document.createElement('script');
-      s2.src = 'https://www.highperformanceformat.com/87fe1b12cb1aa3fb5ac067934fcfef69/invoke.js';
-      container.appendChild(s2);
-    })();
+    atOptions = {
+      'key' : '87fe1b12cb1aa3fb5ac067934fcfef69',
+      'format' : 'iframe',
+      'height' : 50,
+      'width' : 320,
+      'params' : {}
+    };
   </script>
+  <script is:inline src="https://www.highperformanceformat.com/87fe1b12cb1aa3fb5ac067934fcfef69/invoke.js"></script>
 </div>
