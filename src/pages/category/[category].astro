@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import MovieCard from '../../components/MovieCard.astro';
+import AdLeaderboard728 from '../../components/ads/AdLeaderboard728.astro';
+import AdRect300 from '../../components/ads/AdRect300.astro';
 import movies from '../../data/movies.json';
 import categories from '../../data/categories.json';
 
@@ -38,6 +40,8 @@ const totalPages = tmdbData.totalPages;
       <p class="text-base text-[var(--color-body)]">{category.description}</p>
       <p class="text-sm text-[var(--color-mute)] mt-2 font-mono">{totalResults} titles found</p>
     </div>
+
+    <AdLeaderboard728 />
 
     <!-- Movie Grid -->
     {categoryMovies.length > 0 ? (
@@ -91,6 +95,8 @@ const totalPages = tmdbData.totalPages;
         )}
       </div>
     )}
+    <AdRect300 />
+
   </div>
 
   <Footer slot="footer" />

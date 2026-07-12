@@ -5,6 +5,8 @@ import Footer from '../../components/Footer.astro';
 import MovieCard from '../../components/MovieCard.astro';
 import AdNative from '../../components/ads/AdNative.astro';
 import AdSkyscraper160 from '../../components/ads/AdSkyscraper160.astro';
+import AdLeaderboard728 from '../../components/ads/AdLeaderboard728.astro';
+import AdRect300 from '../../components/ads/AdRect300.astro';
 import { getMovieDetails, getPopularMovies } from '../../lib/tmdb';
 
 const { slug } = Astro.params;
@@ -272,6 +274,9 @@ const categoryLabels: Record<string, string> = {
       </div>
     </section>
 
+    <!-- Leaderboard Ad before Related Movies -->
+    <AdLeaderboard728 />
+
     <!-- Related Movies -->
     {relatedMovies.length > 0 && (
       <section id="related-section">
@@ -283,6 +288,10 @@ const categoryLabels: Record<string, string> = {
         </div>
       </section>
     )}
+  </div>
+
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdRect300 />
   </div>
 
   <Footer slot="footer" />

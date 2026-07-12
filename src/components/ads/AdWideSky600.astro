@@ -1,0 +1,19 @@
+---
+// 160x600 Wide Skyscraper (Ideal for sidebar placements)
+---
+<div class="flex justify-center items-center my-6 overflow-hidden min-h-[600px] min-w-[160px] ad-slot-widesky">
+  <script is:inline>
+    (function() {
+      var slots = document.querySelectorAll('.ad-slot-widesky');
+      var container = slots[slots.length - 1];
+      if (!container || container.dataset.loaded) return;
+      container.dataset.loaded = 'true';
+      var s1 = document.createElement('script');
+      s1.text = "var atOptions = { 'key' : '68a3e5ce80752928ab5a146c22254a79', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };";
+      container.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.src = 'https://www.highperformanceformat.com/68a3e5ce80752928ab5a146c22254a79/invoke.js';
+      container.appendChild(s2);
+    })();
+  </script>
+</div>

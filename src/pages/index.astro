@@ -5,6 +5,8 @@ import Footer from '../components/Footer.astro';
 import MovieCard from '../components/MovieCard.astro';
 import AdBanner468 from '../components/ads/AdBanner468.astro';
 import AdNative from '../components/ads/AdNative.astro';
+import AdLeaderboard728 from '../components/ads/AdLeaderboard728.astro';
+import AdRect300 from '../components/ads/AdRect300.astro';
 import { getTrendingMovies } from '../lib/tmdb';
 import movies from '../data/movies.json';
 import genres from '../data/genres.json';
@@ -235,6 +237,11 @@ const platforms = [
     </section>
   )}
 
+  <!-- Leaderboard Ad between Web Series and Stats -->
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdLeaderboard728 />
+  </div>
+
   <!-- ═══ STATS SECTION (Dark polarity-flipped band) ═══ -->
   <section class="py-20 sm:py-24 bg-[var(--color-surface)] border-y border-[var(--color-hairline)] relative overflow-hidden" id="stats">
     <div class="absolute inset-0 bg-mesh-gradient opacity-30"></div>
@@ -254,6 +261,11 @@ const platforms = [
       </div>
     </div>
   </section>
+
+  <!-- 300x250 Rectangle Ad between Stats and All Movies -->
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdRect300 />
+  </div>
 
   <!-- ═══ ALL MOVIES ═══ -->
   <section class="py-12" id="all-movies">

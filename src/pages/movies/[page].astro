@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import MovieCard from '../../components/MovieCard.astro';
+import AdLeaderboard728 from '../../components/ads/AdLeaderboard728.astro';
 import { getPopularMovies } from '../../lib/tmdb';
 
 const currentPage = parseInt(Astro.params.page || '1');
@@ -73,6 +74,10 @@ const page = {
         </span>
       )}
     </div>
+  </div>
+
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6">
+    <AdLeaderboard728 />
   </div>
 
   <Footer slot="footer" />

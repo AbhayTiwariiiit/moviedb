@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import MovieCard from '../../components/MovieCard.astro';
+import AdLeaderboard728 from '../../components/ads/AdLeaderboard728.astro';
+import AdRect300 from '../../components/ads/AdRect300.astro';
 import movies from '../../data/movies.json';
 import genres from '../../data/genres.json';
 
@@ -111,6 +113,9 @@ const totalPages = tmdbData.totalPages;
         ))}
       </div>
     </div>
+
+    <AdRect300 />
+
   </div>
 
   <Footer slot="footer" />

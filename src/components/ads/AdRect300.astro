@@ -1,0 +1,19 @@
+---
+// 300x250 Medium Rectangle (Ideal for in-content placements)
+---
+<div class="flex justify-center items-center my-6 overflow-hidden min-h-[250px] ad-slot-rect">
+  <script is:inline>
+    (function() {
+      var slots = document.querySelectorAll('.ad-slot-rect');
+      var container = slots[slots.length - 1];
+      if (!container || container.dataset.loaded) return;
+      container.dataset.loaded = 'true';
+      var s1 = document.createElement('script');
+      s1.text = "var atOptions = { 'key' : '5d7c5cefc936a88900084144b1d3f56c', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };";
+      container.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.src = 'https://www.highperformanceformat.com/5d7c5cefc936a88900084144b1d3f56c/invoke.js';
+      container.appendChild(s2);
+    })();
+  </script>
+</div>
