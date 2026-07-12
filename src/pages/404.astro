@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Page Not Found" description="The page you are looking for does not exist.">
+  <Navbar slot="navbar" />
+  <div class="flex flex-col items-center justify-center min-h-screen bg-[var(--color-canvas-soft)] text-center py-16 px-4">
+    <svg class="w-48 h-48 text-[var(--color-hairline)] mb-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="8" y1="12" x2="16" y2="12" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+    </svg>
+    <h1 class="text-5xl font-bold text-[var(--color-ink)] mb-4">404</h1>
+    <p class="text-xl text-[var(--color-body)] mb-8">Oops! The page you requested cannot be found.</p>
+    <a href="/" class="inline-block bg-[var(--color-surface)] text-[var(--color-ink)] px-6 py-2 rounded-full hover:bg-[var(--color-surface-hover)] transition-colors">Go Home</a>
+  </div>
+  <Footer slot="footer" />
+</Layout>

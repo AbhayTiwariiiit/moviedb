@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /search
+Disallow: /__/*
+
+Sitemap: https://hd4umovies.in/sitemap.xml

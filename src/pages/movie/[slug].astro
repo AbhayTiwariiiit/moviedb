@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import MovieCard from '../../components/MovieCard.astro';
+import AdNative from '../../components/ads/AdNative.astro';
+import AdSkyscraper160 from '../../components/ads/AdSkyscraper160.astro';
 import { getMovieDetails, getPopularMovies } from '../../lib/tmdb';
 
 const { slug } = Astro.params;
@@ -80,9 +82,12 @@ const categoryLabels: Record<string, string> = {
       </nav>
 
       <div class="flex flex-col lg:flex-row gap-8 items-start">
-        <!-- Poster -->
-        <div class="shrink-0 w-48 sm:w-56 lg:w-64 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10 hidden sm:block">
-          <img src={movie.posterUrl} alt={movie.title} class="w-full aspect-[2/3] object-cover" loading="eager" onerror="this.style.display='none'" />
+        <!-- Poster & Ads Column -->
+        <div class="shrink-0 flex flex-col gap-6 w-48 sm:w-56 lg:w-64 hidden sm:flex">
+          <div class="rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <img src={movie.posterUrl} alt={movie.title} class="w-full aspect-[2/3] object-cover" loading="eager" onerror="this.style.display='none'" />
+          </div>
+          <AdSkyscraper160 />
         </div>
 
         <!-- Info -->
@@ -126,6 +131,18 @@ const categoryLabels: Record<string, string> = {
 
           <!-- Synopsis -->
           <p class="text-base text-[var(--color-body)] leading-relaxed w-full max-w-[1000px] mb-6">{movie.synopsis}</p>
+
+          <!-- Streaming Buttons -->
+          <div class="flex flex-wrap items-center gap-4 mb-8">
+            <a href="https://www.effectivecpmnetwork.com/dcjdq8s5qu?key=7bdf6eba9341e1bcd412e2ff77d77b73" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-[var(--color-gradient-start)] to-[var(--color-gradient-mid)] text-white font-semibold shadow-lg shadow-[var(--color-gradient-start)]/20 hover:scale-105 transition-transform">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              Stream in HD
+            </a>
+            <a href="https://www.effectivecpmnetwork.com/dcjdq8s5qu?key=7bdf6eba9341e1bcd412e2ff77d77b73" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-hairline)] text-[var(--color-ink)] font-semibold hover:bg-[var(--color-surface-hover)] transition-colors">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download
+            </a>
+          </div>
 
           <!-- Director & Key Info -->
           <div class="flex flex-wrap gap-6 text-sm">
@@ -177,6 +194,9 @@ const categoryLabels: Record<string, string> = {
         </div>
       </div>
     </section>
+
+    <!-- Native Adsterra Ad -->
+    <AdNative />
 
     <!-- Cast -->
     <section class="mb-12" id="cast-section">
